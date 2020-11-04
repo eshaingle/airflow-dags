@@ -5,7 +5,6 @@ from airflow import DAG
 from airflow.models import Variable
 from datetime import datetime
 from airflow.operators.python_operator import PythonOperator
-from airflow.contrib.operators import KubernetesOperator
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.hooks.base_hook import BaseHook
 
