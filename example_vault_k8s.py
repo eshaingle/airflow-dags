@@ -30,7 +30,8 @@ test_task = PythonOperator(
 passing = KubernetesPodOperator(namespace='default',
                                 image="alpine:3.7",
                                 cmds=["sh", "-cx"],
-                                arguments=["apk add curl jq", "echo $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"],
+                                arguments=["apk add curl jq"],
+				env_vars={'KUBE_TOKEN': "/var/run/secrets/kubernetes.io/serviceaccount/token"}
                                 labels={"test-airflow": "firstversion"},
                                 name="passing-test",
                                 task_id="passing-task",
