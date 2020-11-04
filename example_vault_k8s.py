@@ -5,6 +5,8 @@ from airflow import DAG
 from airflow.models import Variable
 from datetime import datetime
 from airflow.operators.python_operator import PythonOperator
+from airflow.contrib.operators import KubernetesOperator
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.hooks.base_hook import BaseHook
 
 os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.contrib.secrets.hashicorp_vault.VaultBackend"
@@ -29,7 +31,7 @@ test_task = PythonOperator(
 passing = KubernetesPodOperator(namespace='default',
                                 image="alpine:3.7",
                                 cmds=["sh", "-cx"],
-                                arguments=["apk add curl jq", "KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"],
+                                arguments=["apk add curl jq", "KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)", "echo $KUBE_TOKEN"],
                                 labels={"test-airflow": "firstversion"},
                                 name="passing-test",
                                 task_id="passing-task",
