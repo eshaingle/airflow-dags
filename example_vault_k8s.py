@@ -15,8 +15,7 @@ def get_secrets(**kwargs):
 
 
 dag = DAG(
-    dag_id='vaulttoken_env_var', start_date=datetime(2020, 1, 1),
-    schedule_interval=None)
+    'vaulttoken_env_var', start_date=datetime(2020, 1, 1), schedule_interval=None)
 
 test_task = PythonOperator(
     task_id='test-vault',
