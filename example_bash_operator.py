@@ -1,54 +1,47 @@
-from builtins import range
-from datetime import timedelta
-
-import airflow
-from airflow.models import DAG
-from airflow.operators.bash_operator import BashOperator
+from airflow import DAG
+from airflow import configuration as conf
+from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
+from airflow.utils.dates import days_ago
+from datetime import datetime, timedelta
 
-args = {
+default_args = {
     'owner': 'airflow',
-    'start_date': airflow.utils.dates.days_ago(2),
+    'depends_on_past': False,
+    'start_date': days_ago(2),
+    'email': '<uremailid>',
+    'email_on_failure': False,
+    'email_on_retry': False,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5)
 }
 
 dag = DAG(
-    dag_id='example_bash_operator',
-    default_args=args,
-    schedule_interval='0 0 * * *',
-    dagrun_timeout=timedelta(minutes=60),
-)
+    'kubernetes_sample', default_args=default_args, catchup=False, schedule_interval=timedelta(minutes=10))
 
-run_this_last = DummyOperator(
-    task_id='run_this_last',
-    dag=dag,
-)
+start = DummyOperator(task_id='run_this_first', dag=dag)
 
-# [START howto_operator_bash]
-run_this = BashOperator(
-    task_id='run_after_loop',
-    bash_command='echo 1',
-    dag=dag,
-)
-# [END howto_operator_bash]
+passing = KubernetesPodOperator(namespace='default',
+                                image="python:3.6",
+                                cmds=["python", "-c"],
+                                arguments=["print('hello world')"],
+                                labels={"test-airflow": "firstversion"},
+                                name="passing-test",
+                                task_id="passing-task",
+                                get_logs=True,
+                                dag=dag
+                                )
 
-run_this >> run_this_last
+failing = KubernetesPodOperator(namespace='default',
+                                image="ubuntu:1604",
+                                cmds=["python", "-c"],
+                                arguments=["print('hello world')"],
+                                labels={"test-airflow": "firstversion"},
+                                name="fail",
+                                task_id="failing-task",
+                                get_logs=True,
+                                dag=dag
+                                )
 
-for i in range(3):
-    task = BashOperator(
-        task_id='runme_' + str(i),
-        bash_command='echo "{{ task_instance_key_str }}" && sleep 1',
-        dag=dag,
-    )
-    task >> run_this
-
-# [START howto_operator_bash_template]
-also_run_this = BashOperator(
-    task_id='also_run_this',
-    bash_command='echo "run_id={{ run_id }} | dag_run={{ dag_run }}"',
-    dag=dag,
-)
-# [END howto_operator_bash_template]
-also_run_this >> run_this_last
-
-if __name__ == "__main__":
-    dag.cli()
+passing.set_upstream(start)
+failing.set_upstream(start)
