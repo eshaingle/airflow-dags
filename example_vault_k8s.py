@@ -30,7 +30,7 @@ test_task = PythonOperator(
 passing = KubernetesPodOperator(namespace='default',
                                 image="alpine:3.7",
                                 cmds=["sh", "-cx"],
-                                arguments=["apk add curl jq", "KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" , "curl --request POST --data \'{"jwt": "'"$KUBE_TOKEN"'", "role": "example"}\' http://192.168.49.1:8200/v1/auth/kubernetes/login | jq"],
+                                arguments=["apk add curl jq", "KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" , "curl --request POST --data \'{\"jwt\": \"'"$KUBE_TOKEN"'\", \"role\": \"example\"}\' http://192.168.49.1:8200/v1/auth/kubernetes/login | jq"],
                                 labels={"test-airflow": "firstversion"},
                                 name="passing-test",
                                 task_id="passing-task",
