@@ -8,9 +8,12 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.hooks.base_hook import BaseHook
 
 os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.contrib.secrets.hashicorp_vault.VaultBackend"
-os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "connections", "mount_point": "secret", "auth_type": "kubernetes", "kubernetes_role": "example", "url": "http://127.0.0.1:8200"}'
+os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "mount_point": "secret", "auth_type": "kubernetes", "kubernetes_role": "example", "url": "http://127.0.0.1:8200"}'
 
 def get_secrets(**kwargs):
+    conn = BaseHook.get_connection(kwargs['my_conn_id'])
+    print("Password:", {conn.password} )
+    print(" Login:", {conn.username} )
     print("Url:", {environ.get("CLIENT_TOKEN")})
 
 
@@ -20,4 +23,5 @@ dag = DAG(
 test_task = PythonOperator(
     task_id='test-vault',
     python_callable=get_secrets,
+    op_kwargs={'my_conn_id': 'config'},
     dag=dag)
