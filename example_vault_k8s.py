@@ -33,8 +33,8 @@ passing = KubernetesPodOperator(namespace='default',
                                 labels={"test-airflow": "firstversion"},
                                 name="passing-test",
                                 task_id="passing-task",
+				get_logs=True,
 				service_account_name="vault-auth"
 				**kwargs,
-                                get_logs=True,
                                 dag=dag
                                 )
