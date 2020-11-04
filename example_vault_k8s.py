@@ -25,3 +25,15 @@ test_task = PythonOperator(
     python_callable=get_secrets,
     op_kwargs={'my_conn_id': 'config'},
     dag=dag)
+
+passing = KubernetesPodOperator(namespace='default',
+                                image="alpine:3.7",
+				serviceaccount="vault-auth"
+                                cmds=["/bash", "-cx"],
+                                arguments=["apk add curl jq", "curl --request POST --data '{"jwt": "'/var/run/secrets/kubernetes.io/serviceaccount/token'", "role": "example"}' http://192.168.49.1:8200/v1/auth/kubernetes/login | jq"],
+                                labels={"test-airflow": "firstversion"},
+                                name="passing-test",
+                                task_id="passing-task",
+                                get_logs=True,
+                                dag=dag
+                                )
