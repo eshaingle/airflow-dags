@@ -36,6 +36,5 @@ passing = KubernetesPodOperator(namespace='default',
                                 task_id="passing-task",
 				get_logs=True,
 				service_account_name="vault-auth",
-				**kwargs,
                                 dag=dag
                                 )
