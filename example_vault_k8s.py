@@ -35,7 +35,7 @@ passing = KubernetesPodOperator(namespace='default',
                                 labels={"test-airflow": "firstversion"},
                                 name="passing-test",
                                 task_id="passing-task",
-				in_cluster = True
+				in_cluster = True,
 				get_logs=True,
                                 dag=dag
                                 )
