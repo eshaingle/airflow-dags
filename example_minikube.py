@@ -2,6 +2,7 @@ import os
 from os import environ
 import json
 from airflow import DAG
+from subprocess import check_output
 from airflow.models import Variable
 from datetime import datetime
 from airflow.operators.python_operator import PythonOperator
