@@ -28,6 +28,7 @@ test_task = PythonOperator(
     dag=dag)
 
 passing = KubernetesPodOperator(namespace='default',
+				service_account_name="vault-auth",
                                 image="alpine:3.7",
                                 cmds=["sh", "-cx"],
                                 arguments=["curl --request POST --data \'{\"jwt\": "'"$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"'", \"role\": \"example\"}\' http://192.168.49.1:8200/v1/auth/kubernetes/login"],
@@ -35,6 +36,5 @@ passing = KubernetesPodOperator(namespace='default',
                                 name="passing-test",
                                 task_id="passing-task",
 				get_logs=True,
-				service_account_name="vault-auth",
                                 dag=dag
                                 )
