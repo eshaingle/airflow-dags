@@ -9,11 +9,7 @@ from airflow.operators.python_operator import PythonOperator
 
 
 def get_minikube_host():
-    if "MINIKUBE_IP" in os.environ:
-        host_ip = os.environ['MINIKUBE_IP']
-    else:
-        print("no ip set")
-
+    host_ip = os.environ['MINIKUBE_IP']
     host = '{}:30809'.format(host_ip.strip())
     print("minikube ip:", {host})
     return host
