@@ -12,9 +12,10 @@ def get_minikube_host():
     if "MINIKUBE_IP" in os.environ:
         host_ip = os.environ['MINIKUBE_IP']
     else:
-        host_ip = check_output(['/usr/local/bin/minikube', 'ip']).decode('UTF-8')
+        print("no ip set")
 
     host = '{}:30809'.format(host_ip.strip())
+    print("minikube ip:", {host})
     return host
    
 dag = DAG(
