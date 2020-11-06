@@ -13,7 +13,7 @@ os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.providers.hashicorp.secrets.v
 os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "auth_mount_point": "kubernetes", "mount_point": "secret", "auth_type": "kubernetes", "kubernetes_role": "example", "kubernetes_jwt_path":"/var/run/secrets/kubernetes.io/serviceaccount/token", "url": "http://192.168.49.1:8200"}'
 
 def get_secrets(**kwargs):
-    conn = VaultBackend.get_connection(kwargs['my_conn_id'])
+    conn = VaultBackend.get_conn_uri(kwargs['my_conn_id'])
     print("Password:", {conn.password} )
     print(" Login:", {conn.username} )
     print("Url:", {environ.get("CLIENT_TOKEN")})
