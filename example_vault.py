@@ -5,6 +5,7 @@ from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
 from airflow.hooks.base_hook import BaseHook
 
+os.environ['AIRFLOW__CORE__EXECUTOR'] = "SequentialExecutor"
 os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.contrib.secrets.hashicorp_vault.VaultBackend"
 os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "mount_point": "secret", "auth_type": "token", "token": "root", "url": "http://127.0.0.1:8200"}'
 
