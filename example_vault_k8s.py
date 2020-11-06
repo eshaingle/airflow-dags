@@ -28,7 +28,7 @@ test_task = PythonOperator(
     dag=dag)
 
 passing = KubernetesPodOperator(namespace='default',
-				service_account_name="vault-auth",
+				service_account_name="default",
                                 image="alpine:3.7",
                                 cmds=["sh", "-cx"],
                                 arguments=["apk add curl jq && curl --request POST \
