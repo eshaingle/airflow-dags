@@ -7,12 +7,13 @@ from datetime import datetime
 from airflow.operators.python_operator import PythonOperator
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.hooks.base_hook import BaseHook
+from airflow.providers.hashicorp.secrets.vault import VaultBackend
 
-os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.contrib.secrets.hashicorp_vault.VaultBackend"
-os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "mount_point": "kubernetes", "auth_type": "kubernetes", "kubernetes_role": "example", "kubernetes_jwt_path":"/var/run/secrets/kubernetes.io/serviceaccount/token", "url": "http://192.168.49.1:8200"}'
+os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.providers.hashicorp.secrets.vault.VaultBacken"
+os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "auth_mount_point": "kubernetes", "mount_point": "secret", "auth_type": "kubernetes", "kubernetes_role": "example", "kubernetes_jwt_path":"/var/run/secrets/kubernetes.io/serviceaccount/token", "url": "http://192.168.49.1:8200"}'
 
 def get_secrets(**kwargs):
-    conn = BaseHook.get_connection(kwargs['my_conn_id'])
+    conn = VaultBackend.get_connection(kwargs['my_conn_id'])
     print("Password:", {conn.password} )
     print(" Login:", {conn.username} )
     print("Url:", {environ.get("CLIENT_TOKEN")})
