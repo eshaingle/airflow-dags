@@ -6,7 +6,7 @@ from datetime import datetime
 from airflow.hooks.base_hook import BaseHook
 
 os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.providers.hashicorp.secrets.vault.VaultBackend"
-os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "message", "mount_point": "kv", "auth_type": "token", "token": "s.aSGhYbNQX2Hknn4Iij9ZA7mZ", "url": "http://vault.default.svc:8200"}'
+os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "connections", "mount_point": "secret", "auth_type": "token", "token": "root", "url": "http://vault.default.svc:8200"}'
 
 def get_secrets(**kwargs):
     conn = BaseHook.get_connection(kwargs['my_conn_id'])
@@ -21,5 +21,5 @@ with DAG('vault_example', start_date=datetime(2020, 1, 1), schedule_interval=Non
     test_task = PythonOperator(
         task_id='test-task',
         python_callable=get_secrets,
-        op_kwargs={'my_conn_id': 'config'},
+        op_kwargs={'my_conn_id': 'smtp_default'},
     )
