@@ -34,7 +34,7 @@ passing = KubernetesPodOperator(namespace='default',
                                 image="alpine:3.7",
                                 cmds=["sh", "-cx"],
                                 arguments=["apk add curl && curl --request POST \
-        	--data '{"'"jwt"'": "'"$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"'", "'"role"'": "'"example"'"}' \
+        	--data '{"'"jwt"'": "'"eyJhbGciOiJSUzI1NiIsImtpZCI6IndjZ3RUNGFwUzVMV1FKNl9YTnZER2c5OUk4c1l6aE9ERzFhOHh0QkdxRVkifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6InZhdWx0LWF1dGgtdG9rZW4tN3Z3eHIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoidmF1bHQtYXV0aCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjQ5Y2M4MTJkLTQ4MmItNGNmYi05Yzg3LThjMDExYTQyYzMyZSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OnZhdWx0LWF1dGgifQ.aeVOgelVei3NX9PQm_qzhPIXL0iEamOsHhNfMrGXfat15nfIdRG1FmpSTkH7URvIxIprWbx6gvwaWhKsB4LDz7GEPjxEYr-c2sUU54ZaC2csauru2xWAuvf93MZTIVww7db_Huhq-YMiJsFjULjswWLIARd-8xOec8DMj9dx_w03B01YKhjDdplTynwAnoIaIZLvC7Wp81ZrgpwihsiGWOFc_oOtxr3QOlZfGSGLkc2Bxnm446Nc-EeUOMs0ctW1xra5yAvNo05iKcsO3tZ5fdQj6xT-WMF-Gt_lbmyvP1-26-b55jcVSpXSOSWmrFb2FYG-3FmsGiTRYvwLV_grKg"'", "'"role"'": "'"example"'"}' \
         	http://vault:8200/v1/auth/kubernetes/login "],
                                 labels={"test-airflow": "firstversion"},
                                 name="passing-test",
