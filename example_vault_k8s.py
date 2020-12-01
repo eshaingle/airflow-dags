@@ -9,25 +9,8 @@ from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOpera
 from airflow.hooks.base_hook import BaseHook
 from airflow.providers.hashicorp.secrets.vault import VaultBackend
 
-os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.providers.hashicorp.secrets.vault.VaultBackend"
-os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "mount_point": "secret", "auth_type": "token", "token":"s.Jaqyd5pwV0raCaigktNrO44J", "url": "http://vault:8200"}'
-
-def get_secrets(**kwargs):
-    conn = BaseHook.get_connection(kwargs['my_conn_id'])
-    print("Password:", {conn.password} )
-    print(" Login:", {conn.login} )
-    print(" URI:", {conn.get_uri()} )
-    print("Host:", {conn.host})
-
-
 dag = DAG(
     'vaulttoken_k8s', start_date=datetime(2020, 1, 1), schedule_interval=None)
-
-test_task = PythonOperator(
-    task_id='test-vault',
-    python_callable=get_secrets,
-    op_kwargs={'my_conn_id': 'smtp_default'},
-    dag=dag)
 
 passing = KubernetesPodOperator(namespace='default',
 				service_account_name="vault-auth",
