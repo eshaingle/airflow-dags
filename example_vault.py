@@ -6,7 +6,7 @@ from datetime import datetime
 from airflow.hooks.base_hook import BaseHook
 
 os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.providers.hashicorp.secrets.vault.VaultBackend"
-os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "mount_point": "secret", "auth_type": "kubernetes", "jwt": "eyJhbGciOiJSUzI1NiIsImtpZCI6IndjZ3RUNGFwUzVMV1FKNl9YTnZER2c5OUk4c1l6aE9ERzFhOHh0QkdxRVkifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6InZhdWx0LWF1dGgtdG9rZW4teDVscjgiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoidmF1bHQtYXV0aCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjljYTBhOTk5LTYzOGUtNDgyNS1hNTkxLWM0MDU2YTU5NmVkZCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OnZhdWx0LWF1dGgifQ.uSo_RnaM3LxwDxnRDCwezCSccG0ynqXPjc5Ez9c0s_VbqdnAUaQuiGeO1wO9fWAsDb-dMNYIqUyXRD71z6POLew2MUR4trxWaicuOxbb5XLWoaE3XCKPubpEHWuXOExTuRT8QttVHX1QUEGxKqFfZeRezSsfLirZSOaqYijBS7qkPtDTggNCHKL9NVL0I3ssLLUDa7QVvDSFOLKhimXZqzWqsiaXlwdgel-F3UxAlKh-9EBIXHxvW8-1optkn-dnFAXzqfD3U61t6E2y_3JLcjwJWpGYNR3sFhXeglNdvhe9UNHsf_P3IqjN-IsRNdNq54luPHCetJDqvpZFzA94_w", "url": "http://localhost:8200"}'
+os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "mount_point": "secret", "auth_type": "token", "token": "s.Jaqyd5pwV0raCaigktNrO44J", "url": "http://vault:8200"}'
 
 def get_secrets(**kwargs):
     conn = BaseHook.get_connection(kwargs['my_conn_id'])
