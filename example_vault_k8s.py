@@ -10,7 +10,7 @@ from airflow.hooks.base_hook import BaseHook
 from airflow.providers.hashicorp.secrets.vault import VaultBackend
 
 os.environ['AIRFLOW__SECRETS__BACKEND'] = "airflow.providers.hashicorp.secrets.vault.VaultBackend"
-os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "mount_point": "secret", "auth_type": "token", "token":"s.Jaqyd5pwV0raCaigktNrO44J", "url": "http://localhost:8200", "kv_engine_version": 1}'
+os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", "mount_point": "secret", "auth_type": "token", "token":"s.Jaqyd5pwV0raCaigktNrO44J", "url": "http://vault:8200"}'
 
 def get_secrets(**kwargs):
     conn = BaseHook.get_connection(kwargs['my_conn_id'])
