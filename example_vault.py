@@ -11,7 +11,9 @@ os.environ['AIRFLOW__SECRETS__BACKEND_KWARGS'] = '{"connections_path": "myapp", 
 def get_secrets(**kwargs):
     conn = BaseHook.get_connection(kwargs['my_conn_id'])
     print("Password:", {conn.password} )
-    print(" Login:", {conn.username} )
+    print(" Login:", {conn.login} )
+    print(" URI:", {conn.get_uri()} )
+    print("Host:", {conn.host})
 
 with DAG('vault_example', start_date=datetime(2020, 1, 1), schedule_interval=None) as dag:
 
@@ -19,5 +21,5 @@ with DAG('vault_example', start_date=datetime(2020, 1, 1), schedule_interval=Non
     test_task = PythonOperator(
         task_id='test-task',
         python_callable=get_secrets,
-        op_kwargs={'my_conn_id': 'config'},
+        op_kwargs={'my_conn_id': 'smtp_default'},
     )
